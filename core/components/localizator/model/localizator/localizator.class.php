@@ -93,7 +93,7 @@ class localizator
         $rte = isset($scriptProperties['which_editor']) ? $scriptProperties['which_editor'] : $this->modx->getOption('which_editor', '', $this->modx->_userConfig);
         
 
-        foreach ($tabs as $tabid => $subtab) {
+        foreach ((array)$tabs as $tabid => $subtab) {
             $tabs =array();
             foreach ($subtab['tabs'] as $subtabid => $tab) {
                 $tvs = array();
