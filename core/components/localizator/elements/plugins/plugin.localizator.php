@@ -24,7 +24,7 @@ switch($modx->event->name) {
             ');
         break;
     case 'OnDocFormPrerender':
-        if ($mode == 'upd'){
+        if ($mode == 'upd' && $resource instanceof modResource){
             $modx->controller->addLexiconTopic('localizator:default');
             $modx->controller->addCss($localizator->config['cssUrl'] . 'mgr/main.css');
             $modx->controller->addCss($localizator->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
