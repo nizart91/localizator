@@ -25,12 +25,12 @@ main.tpl
 <h1>{$_modx->resource.longtitle ?: $_modx->resource.pagetitle}</h1>
 
 
-<span style="color:red;">&#x7B;$_modx->resource->localizator_content&#x7D;</span><br>
+<span style="color:red;">{$_modx->resource->localizator_content}</span><br>
 <br>{$_modx->resource.localizator_content}
 <hr>
 
-<span style="color:red;">&#x7B;$_modx->resource.pagetitle&#x7D;</span> = {$_modx->resource.pagetitle}
-<br><span style="color:red;">&#x7B;$_modx->resource.longtitle&#x7D;</span> = {$_modx->resource.longtitle}
+<span style="color:red;">&#x7B;$_modx->resource.pagetitle}</span> = {$_modx->resource.pagetitle}
+<br><span style="color:red;">&#x7B;$_modx->resource.longtitle}</span> = {$_modx->resource.longtitle}
 <br>
 <hr>
 <br>
@@ -44,10 +44,10 @@ main.tpl
 <span style="color: #bbbbbb; font-size: 12px; margin-left: 41px;">Выводятся только переведенные документы</span>
 <br>
 <hr>
-<span style="color:red;">&#x7B;'localizator_key' | option&#x7D;</span> = {'localizator_key' | option}
-<br><span style="color:red;">&#x7B;'cultureKey' | option&#x7D;</span> = {'cultureKey' | option}
-<br><span style="color:red;">&#x7B;'cache_resource_key' | option&#x7D;</span> = {'cache_resource_key' | option}
-<br><span style="color:red;">&#x7B;'site_url' | option&#x7D;</span> = {'site_url' | option}
+<span style="color:red;">{'localizator_key' | option}</span> = {'localizator_key' | option}
+<br><span style="color:red;">{'cultureKey' | option}</span> = {'cultureKey' | option}
+<br><span style="color:red;">{'cache_resource_key' | option}</span> = {'cache_resource_key' | option}
+<br><span style="color:red;">{'site_url' | option}</span> = {'site_url' | option}
 <hr>
 {'!getLanguages' | snippet}
 ```
