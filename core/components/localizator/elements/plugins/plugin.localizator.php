@@ -94,7 +94,7 @@ switch($modx->event->name) {
             $request = preg_replace('/^'.$localizator_key.'\//', '', $request);
         }
         $resource_id = (!$request) ? $modx->getOption('site_start', null, 1) : $localizator->findResource($request);
-        if($resource_id) {
+        if($modx->getObject('modResource',['id' => $resource_id, 'deleted' => 0, 'published' => 1])){
             $modx->sendForward($resource_id);
         }
         break;
