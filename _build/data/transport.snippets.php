@@ -9,6 +9,10 @@ $tmp = array(
         'file' => 'localizator',
         'description' => 'Localizator snippet',
     ),
+    'getLocales' => array(
+        'file' => 'getlocales',
+        'description' => 'getLocales snippet',
+    ),
 );
 
 foreach ($tmp as $k => $v) {
