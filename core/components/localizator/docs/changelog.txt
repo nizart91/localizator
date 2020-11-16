@@ -1,5 +1,10 @@
 Changelog for localizator.
 
+1.0.8-beta
+==============
+- Fixing 500 error when going to an unpublished resource by link (by Ibochkarev)
+- Added "getLocales" snippet (by Ibochkarev)
+
 1.0.7-beta
 ==============
 - Fixed TV checkbox (9-issue)
