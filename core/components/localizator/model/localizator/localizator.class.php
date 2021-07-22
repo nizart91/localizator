@@ -195,13 +195,6 @@ class localizator
                         $tv->setSource($mediasource);
                         $tv->set('id', $field['tv_id']);
 
-                        /*
-                        $default = $tv->processBindings($tv->get('default_text'), $resourceId);
-                        if (strpos($tv->get('default_text'), '@INHERIT') > -1 && (strcmp($default, $tv->get('value')) == 0 || $tv->get('value') == null)) {
-                        $tv->set('inherited', true);
-                        }
-                        */
-
                         $isnew = $this->modx->getOption('isnew', $scriptProperties, 0);
                         $isduplicate = $this->modx->getOption('isduplicate', $scriptProperties, 0);
 

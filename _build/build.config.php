@@ -1,5 +1,6 @@
 <?php
 
+
 // define package
 define('PKG_NAME', 'localizator');
 define('PKG_NAME_LOWER', strtolower(PKG_NAME));
@@ -8,6 +9,7 @@ define('PKG_VERSION', '1.0.8');
 define('PKG_RELEASE', 'beta');
 define('PKG_AUTO_INSTALL', true);
 define('PKG_NAMESPACE_PATH', '{core_path}components/' . PKG_NAME_LOWER . '/');
+
 
 // define paths
 if (isset($_SERVER['MODX_BASE_PATH'])) {
