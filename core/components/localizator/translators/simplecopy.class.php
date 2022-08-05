@@ -25,9 +25,8 @@ class SimpleCopy
      *
      * @return string
      */
-    public function translate($text) 
-    { 
-		return $text;
-	}
-  
+    public function translate($text)
+    {
+        return $text;
+    }
 }

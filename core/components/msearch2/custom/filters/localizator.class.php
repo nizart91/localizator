@@ -1,5 +1,6 @@
 <?php
-class mse2LocalizatorFilter extends mse2FiltersHandler {
+class mse2LocalizatorFilter extends mse2FiltersHandler
+{
 
 	/**
 	 * Retrieves values from Template Variables table
@@ -9,18 +10,21 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 	 *
 	 * @return array Array with tvs values as keys and resources ids as values
 	 */
-	public function getTvValues(array $tvs, array $ids) {
+	public function getTvValues(array $tvs, array $ids)
+	{
 		$filters = $results = array();
 
 		$q = $this->modx->newQuery('modResource', array('modResource.id:IN' => $ids));
-		$q->leftJoin('modTemplateVarTemplate', 'TemplateVarTemplate',
+		$q->leftJoin(
+			'modTemplateVarTemplate',
+			'TemplateVarTemplate',
 			'TemplateVarTemplate.tmplvarid IN (SELECT id FROM ' . $this->modx->getTableName('modTemplateVar') . ' WHERE name IN ("' . implode('","', $tvs) . '") )
 			AND modResource.template = TemplateVarTemplate.templateid'
 		);
 		$q->leftJoin('modTemplateVar', 'TemplateVar', 'TemplateVarTemplate.tmplvarid = TemplateVar.id');
 		$q->leftJoin('modTemplateVarResource', 'TemplateVarResource', 'TemplateVarResource.tmplvarid = TemplateVar.id AND TemplateVarResource.contentid = modResource.id');
 		$q->leftJoin('locTemplateVarResource', 'locTemplateVarResource', array(
-			'locTemplateVarResource.tmplvarid = TemplateVar.id', 
+			'locTemplateVarResource.tmplvarid = TemplateVar.id',
 			'locTemplateVarResource.contentid = modResource.id',
 			'locTemplateVarResource.key:=' => $this->modx->getOption('localizator_key', $this->config, $this->modx->localizator_key, true),
 		));
@@ -63,15 +67,13 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 					$name = strtolower($row['name']);
 					if (isset($filters[$name][$v])) {
 						$filters[$name][$v][$row['id']] = $row['id'];
-					}
-					else {
+					} else {
 						$filters[$name][$v] = array($row['id'] => $row['id']);
 					}
 				}
 			}
-		}
-		else {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, "[mSearch2] Error on get filter params.\nQuery: ".$q->toSQL()."\nResponse: ".print_r($q->stmt->errorInfo(),1));
+		} else {
+			$this->modx->log(modX::LOG_LEVEL_ERROR, "[mSearch2] Error on get filter params.\nQuery: " . $q->toSQL() . "\nResponse: " . print_r($q->stmt->errorInfo(), 1));
 		}
 
 		return $filters;
@@ -85,7 +87,8 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 	 *
 	 * @return array Array with resource fields as keys and resources ids as values
 	 */
-	public function getResourceValues(array $fields, array $ids) {
+	public function getResourceValues(array $fields, array $ids)
+	{
 		$filters = array();
 		$no_id = false;
 		if (!in_array('id', $fields)) {
@@ -100,22 +103,22 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 		));
 		$this->modx->loadClass('localizatorContent');
 		$localizatorFields = array_intersect(array_diff(array_keys($this->modx->map['localizatorContent']['fields']), array('resource_id', 'key', 'active')), $fields);
-		$fields = array_diff($fields,$localizatorFields);
+		$fields = array_diff($fields, $localizatorFields);
 
-		if (count($fields) > 0){
-			$q->select(implode(',', array_map(function($value) {
-			    return "`modResource`.`{$value}`";
+		if (count($fields) > 0) {
+			$q->select(implode(',', array_map(function ($value) {
+				return "`modResource`.`{$value}`";
 			}, $fields)));
 		}
-		if (count($localizatorFields) > 0){
-			$q->select(implode(',', array_map(function($value) {
-			    return "`localizatorContent`.`{$value}`";
+		if (count($localizatorFields) > 0) {
+			$q->select(implode(',', array_map(function ($value) {
+				return "`localizatorContent`.`{$value}`";
 			}, $localizatorFields)));
 		}
-		
+
 		$q->where(array('modResource.id:IN' => $ids));
 		if (in_array('parent', $fields) && $this->mse2->checkMS2()) {
-			$q->leftJoin('msCategoryMember','Member', 'Member.product_id = modResource.id');
+			$q->leftJoin('msCategoryMember', 'Member', 'Member.product_id = modResource.id');
 			$q->orCondition(array('Member.product_id:IN' => $ids));
 			$q->select('category_id');
 		}
@@ -130,25 +133,21 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 					if ($k == 'category_id') {
 						if (!$v || $v == $row['parent']) {
 							continue;
-						}
-						else {
+						} else {
 							$k = 'parent';
 						}
 					}
 					if ($k == 'id' && $no_id) {
 						continue;
-					}
-					elseif (isset($filters[$k][$v])) {
+					} elseif (isset($filters[$k][$v])) {
 						$filters[$k][$v][$row['id']] = $row['id'];
-					}
-					else {
+					} else {
 						$filters[$k][$v] = array($row['id'] => $row['id']);
 					}
 				}
 			}
-		}
-		else {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, "[mSearch2] Error on get filter params.\nQuery: ".$q->toSQL()."\nResponse: ".print_r($q->stmt->errorInfo(),1));
+		} else {
+			$this->modx->log(modX::LOG_LEVEL_ERROR, "[mSearch2] Error on get filter params.\nQuery: " . $q->toSQL() . "\nResponse: " . print_r($q->stmt->errorInfo(), 1));
 		}
 
 		return $filters;
@@ -165,7 +164,8 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 	 *
 	 * @return array Prepared values
 	 */
-	public function buildParentsFilter(array $values, $name = '', $depth = 1, $separator = ' / ') {
+	public function buildParentsFilter(array $values, $name = '', $depth = 1, $separator = ' / ')
+	{
 		$results = $parents = $menuindex = array();
 		$q = $this->modx->newQuery('modResource', array('modResource.id:IN' => array_keys($values), 'published' => 1));
 		$q->innerJoin('localizatorContent', 'localizatorContent', array(
@@ -240,7 +240,8 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 	 *
 	 * @return array
 	 */
-	public function buildGrandParentsFilter(array $values, $name = '', $filter = false) {
+	public function buildGrandParentsFilter(array $values, $name = '', $filter = false)
+	{
 		if (count($values) < 2 && empty($this->config['showEmptyFilters'])) {
 			return array();
 		}
@@ -268,12 +269,10 @@ class mse2LocalizatorFilter extends mse2FiltersHandler {
 				$parent = $grandparents[$k];
 				if (!isset($tmp[$parent])) {
 					$tmp[$parent] = $v;
-				}
-				else {
+				} else {
 					$tmp[$parent] = array_merge($tmp[$parent], $v);
 				}
-			}
-			else {
+			} else {
 				$tmp[$k] = $v;
 			}
 		}

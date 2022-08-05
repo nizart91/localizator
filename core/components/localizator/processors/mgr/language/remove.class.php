@@ -33,7 +33,6 @@ class localizatorLanguageRemoveProcessor extends modObjectProcessor
 
         return $this->success();
     }
-
 }
 
 return 'localizatorLanguageRemoveProcessor';

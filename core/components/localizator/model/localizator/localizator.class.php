@@ -12,12 +12,16 @@ class localizator
      */
     public function __construct(modX &$modx, array $config = array())
     {
-        $this->modx =& $modx;
+        $this->modx = &$modx;
 
-        $corePath = $this->modx->getOption('localizator_core_path', $config,
+        $corePath = $this->modx->getOption(
+            'localizator_core_path',
+            $config,
             $this->modx->getOption('core_path') . 'components/localizator/'
         );
-        $assetsUrl = $this->modx->getOption('localizator_assets_url', $config,
+        $assetsUrl = $this->modx->getOption(
+            'localizator_assets_url',
+            $config,
             $this->modx->getOption('assets_url') . 'components/localizator/'
         );
         $connectorUrl = $assetsUrl . 'connector.php';
@@ -39,7 +43,7 @@ class localizator
             'translator' => $this->modx->getOption('localizator_default_translator', null, 'SimpleCopy', true),
         ), $config);
 
-        require_once dirname(__FILE__, 3) . '/translators/'.strtolower($this->config['translator']).'.class.php';
+        require_once dirname(__FILE__, 3) . '/translators/' . strtolower($this->config['translator']) . '.class.php';
 
         $this->translator = new $this->config['translator']($this->modx, $this->config);
 
@@ -48,19 +52,19 @@ class localizator
     }
 
 
-	public function translate($text, $from, $to) 
-    { 
-		return $this->translator->translate($text, $from = '', $to = '');
-	}
+    public function translate($text, $from, $to)
+    {
+        return $this->translator->translate($text, $from = '', $to = '');
+    }
 
-    
-	public function createForm(&$formtabs, &$record, &$allfields, &$categories, $scriptProperties) 
+
+    public function createForm(&$formtabs, &$record, &$allfields, &$categories, $scriptProperties)
     {
 
         $input_prefix = $this->modx->getOption('input_prefix', $scriptProperties, '');
         $input_prefix = !empty($input_prefix) ? $input_prefix . '_' : '';
         $rte = isset($scriptProperties['which_editor']) ? $scriptProperties['which_editor'] : $this->modx->getOption('which_editor', '', $this->modx->_userConfig);
-        
+
 
         foreach ($formtabs as $tabid => $subtab) {
             $tabs = array();
@@ -77,7 +81,7 @@ class localizator
 
                         /*generate unique tvid, must be numeric*/
                         /*todo: find a better solution*/
-                        $field['tv_id'] = 'localizator_'.$fieldname;
+                        $field['tv_id'] = 'localizator_' . $fieldname;
                         $params = array();
                         $tv = false;
 
@@ -100,9 +104,9 @@ class localizator
                         $tv->set('name', ($fieldname == 'content' ? 'localizator_content' : $fieldname));
 
                         $o_type = $tv->get('type');
-                        
+
                         if ($tv->get('type') == 'richtext') {
-                            $tv->set('type', 'migx' . str_replace(' ','_',strtolower($rte)));
+                            $tv->set('type', 'migx' . str_replace(' ', '_', strtolower($rte)));
                         }
 
                         //we change the phptype, that way we can use any id, not only integers (issues on windows-systems with big integers!)
@@ -151,7 +155,7 @@ class localizator
                             $tv->set('description', $field['description']);
                         }
 
-                        
+
                         $allfield = array();
                         $allfield['field'] = $fieldname;
                         $allfield['tv_id'] = $field['tv_id'];
@@ -160,7 +164,7 @@ class localizator
 
                         $field['array_tv_id'] = $field['tv_id'] . '[]';
                         $mediasource = $this->getFieldSource($field, $tv);
-                        
+
                         $tv->setSource($mediasource);
                         $tv->set('id', $field['tv_id']);
 
@@ -237,14 +241,12 @@ class localizator
                 'id' => $tabid,
                 'tabs' => $tabs,
             );
-
         }
-
     }
 
 
 
-    public function getFieldSource($field, &$tv) 
+    public function getFieldSource($field, &$tv)
     {
         //source from config
         $sourcefrom = isset($field['sourceFrom']) && !empty($field['sourceFrom']) ? $field['sourceFrom'] : 'config';
@@ -264,25 +266,24 @@ class localizator
                     }
                 }
             }
-
         }
-        
+
         if (isset($sources[$this->working_context]) && !empty($sources[$this->working_context])) {
             //try using field-specific mediasource from config
             if ($mediasource = $this->modx->getObject('sources.modMediaSource', $sources[$this->working_context])) {
                 return $mediasource;
             }
         }
-        
-        $mediasource = $tv->getSource($this->working_context,false);
-        
+
+        $mediasource = $tv->getSource($this->working_context, false);
+
         //try to get the context-default-media-source
         if (!$mediasource) {
             $defaultSourceId = null;
-            if ($contextSetting = $this->modx->getObject('modContextSetting',array('key'=>'default_media_source','context_key'=>$this->working_context))){
+            if ($contextSetting = $this->modx->getObject('modContextSetting', array('key' => 'default_media_source', 'context_key' => $this->working_context))) {
                 $defaultSourceId = $contextSetting->get('value');
             }
-            $mediasource = modMediaSource::getDefaultSource($this->modx,$defaultSourceId);
+            $mediasource = modMediaSource::getDefaultSource($this->modx, $defaultSourceId);
         }
 
         return $mediasource;
@@ -305,8 +306,8 @@ class localizator
 
         if (!$language) {
             $host = $find = $http_host;
-            if($request) {
-                if(strpos($request, '/') !== false) {
+            if ($request) {
+                if (strpos($request, '/') !== false) {
                     // "site.com/en/blog/article" to "site.com/en/"
                     $tmp = explode('/', $request);
                     $find = $host . '/' . $tmp[0] . '/';
@@ -327,19 +328,18 @@ class localizator
         if ($language) {
             if (preg_match("/^(http(s):\/\/)/i", $language->http_host)) {
                 $site_url = $language->http_host;
-            }
-            else
+            } else
                 $site_url = MODX_URL_SCHEME . $language->http_host;
 
-            if (substr($site_url, -1) != '/'){
+            if (substr($site_url, -1) != '/') {
                 $site_url .= '/';
             }
 
             $base_url = '/';
             $parse_url = parse_url($site_url);
-            if (isset($parse_url['path'])){
+            if (isset($parse_url['path'])) {
                 $base_url = $parse_url['path'];
-                if (substr($base_url, -1) != '/'){
+                if (substr($base_url, -1) != '/') {
                     $base_url .= '/';
                 }
             }
@@ -425,5 +425,4 @@ class localizator
             'data' => $params,
         );
     }
-
 }

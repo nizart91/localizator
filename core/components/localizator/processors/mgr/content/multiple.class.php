@@ -21,13 +21,15 @@ class localizatorContentMultipleProcessor extends modProcessor
 
         foreach ($ids as $id) {
             /** @var modProcessorResponse $response */
-            $response = $this->modx->runProcessor('mgr/content/' . $method, 
+            $response = $this->modx->runProcessor(
+                'mgr/content/' . $method,
                 array(
                     'id' => $id
-                ), 
+                ),
                 array(
                     'processors_path' => $localizator->config['processorsPath']
-            ));
+                )
+            );
             if ($response->isError()) {
                 return $response->getResponse();
             }
@@ -35,7 +37,6 @@ class localizatorContentMultipleProcessor extends modProcessor
 
         return $this->success();
     }
-
 }
 
 return 'localizatorContentMultipleProcessor';

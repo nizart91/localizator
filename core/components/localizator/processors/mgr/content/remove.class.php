@@ -15,7 +15,7 @@ class localizatorContentRemoveProcessor extends modObjectRemoveProcessor
      */
     public function initialize()
     {
-        if ($this->modx->getOption('localizator_check_permissions', null, false, true)){
+        if ($this->modx->getOption('localizator_check_permissions', null, false, true)) {
             $key = trim($this->getProperty('key'));
             $this->permission = "localizatorcontent_save_{$key}";
         }

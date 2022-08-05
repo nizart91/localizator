@@ -9,22 +9,24 @@ class localizatorContentCreateProcessor extends modObjectCreateProcessor
     public $afterSaveEvent = 'OnSaveLocalization';
     public $permission = '';
 
-    function __construct(modX & $modx,array $properties = array()) {
+    public function __construct(modX &$modx, array $properties = array())
+    {
         parent::__construct($modx, $properties);
         $data = $this->getProperties();
-        foreach ($data as $key => $value){
-            if (strpos($key, 'tvlocalizator_') !== false){
+        foreach ($data as $key => $value) {
+            if (strpos($key, 'tvlocalizator_') !== false) {
                 $this->setProperty(substr($key, 14), $value);
                 $this->unsetProperty($key);
             }
-            if (strpos($key, 'tvbrowserlocalizator_') !== false){
+            if (strpos($key, 'tvbrowserlocalizator_') !== false) {
                 $this->unsetProperty($key);
             }
         }
         $this->unsetProperty('action');
     }
 
-    public function checkPermissions() {
+    public function checkPermissions()
+    {
         if (!$this->modx->getOption('localizator_check_permissions', null, false, true)) return true;
         $key = trim($this->getProperty('key'));
         $this->permission = "localizatorcontent_save_{$key}";
@@ -50,7 +52,6 @@ class localizatorContentCreateProcessor extends modObjectCreateProcessor
 
         return parent::beforeSet();
     }
-
 }
 
 return 'localizatorContentCreateProcessor';

@@ -1,8 +1,9 @@
 <?php
 
-class localizatorLexiconTranslateProcessor extends modProcessor {
+class localizatorLexiconTranslateProcessor extends modProcessor
+{
 
-    public function process() 
+	public function process()
 	{
 		$this->localizator = $this->modx->getService('localizator');
 
@@ -10,21 +11,21 @@ class localizatorLexiconTranslateProcessor extends modProcessor {
 			return $this->failure('Не указана опция localizator_default_language, невозможно определить исходный языка для перевода');
 		}
 
-		$tranlate_all =$this->modx->getOption('localizator_translate_translated_fields');
+		$tranlate_all = $this->modx->getOption('localizator_translate_translated_fields');
 
 		$languages = [];
-        $processed = 0;
+		$processed = 0;
 
 		$_languages = $this->modx->getIterator('localizatorLanguage');
-		foreach($_languages as $language) {
+		foreach ($_languages as $language) {
 			$key = $language->cultureKey ?: $language->key;
-			if($key != $default_language) {
+			if ($key != $default_language) {
 				$languages[] = $key;
 			}
 		}
- 
-        $c = $this->modx->newQuery('modLexiconEntry');
-        $c->limit(1000000); 
+
+		$c = $this->modx->newQuery('modLexiconEntry');
+		$c->limit(1000000);
 		$c->where(array(
 			'namespace' => 'localizator',
 			'topic' => 'site',
@@ -32,10 +33,10 @@ class localizatorLexiconTranslateProcessor extends modProcessor {
 		));
 
 		$total = $this->modx->getCount('modLexiconEntry', $c);
-		$entries = $this->modx->getIterator('modLexiconEntry', $c); 
+		$entries = $this->modx->getIterator('modLexiconEntry', $c);
 		foreach ($entries as $entry) {
 
-			foreach($languages as $language) {
+			foreach ($languages as $language) {
 				$tmp = $this->modx->getObject('modLexiconEntry', array(
 					'namespace' => 'localizator',
 					'topic' => 'site',
@@ -44,11 +45,11 @@ class localizatorLexiconTranslateProcessor extends modProcessor {
 				));
 
 				// если уже есть запись и указано не перезаписывать - прерываем цикл
-				if($tmp && !$tranlate_all) {
+				if ($tmp && !$tranlate_all) {
 					break;
 				}
 
-				if(!$tmp) {
+				if (!$tmp) {
 					$tmp = $this->modx->newObject('modLexiconEntry');
 					$tmp->fromArray(array(
 						'namespace' => 'localizator',
@@ -59,21 +60,20 @@ class localizatorLexiconTranslateProcessor extends modProcessor {
 				}
 
 				$translation = $this->localizator->translate($entry->value, $default_language, $language);
-				if(!$translation) continue;
+				if (!$translation) continue;
 
 				$tmp->set('value', $translation);
 				$tmp->save();
 			}
 
-			$processed++; 
+			$processed++;
 		}
 
 		return $this->success('', array(
-            'total' => $total,
-            'processed' => $processed,
-        ));
-    } 
-
+			'total' => $total,
+			'processed' => $processed,
+		));
+	}
 }
 
 return 'localizatorLexiconTranslateProcessor';
