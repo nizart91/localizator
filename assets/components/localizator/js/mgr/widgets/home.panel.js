@@ -2,7 +2,8 @@ localizator.panel.Home = function (config) {
     config = config || {};
     Ext.apply(config, {
         baseCls: 'modx-formpanel',
-        layout: 'anchor',
+        layout: 'anchor', 
+        cls         : 'container',
         /*
          stateful: true,
          stateId: 'localizator-panel-home',
@@ -13,7 +14,7 @@ localizator.panel.Home = function (config) {
         items: [{
             html: '<h2>' + _('localizator') + '</h2>',
             cls: '',
-            style: {margin: '15px'}
+            style: {margin: '15px 0'}
         }, {
             xtype: 'modx-tabs',
             defaults: {border: false, autoHeight: true},
