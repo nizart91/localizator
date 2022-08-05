@@ -10,7 +10,7 @@ class localizator
      * @param modX $modx
      * @param array $config
      */
-    function __construct(modX &$modx, array $config = array())
+    public function __construct(modX &$modx, array $config = array())
     {
         $this->modx =& $modx;
 
@@ -36,57 +36,26 @@ class localizator
             'chunkSuffix' => '.chunk.tpl',
             'snippetsPath' => $corePath . 'elements/snippets/',
             'processorsPath' => $corePath . 'processors/',
+            'translator' => $this->modx->getOption('localizator_default_translator', null, 'SimpleCopy', true),
         ), $config);
+
+        require_once dirname(__FILE__, 3) . '/translators/'.strtolower($this->config['translator']).'.class.php';
+
+        $this->translator = new $this->config['translator']($this->modx, $this->config);
 
         $this->modx->addPackage('localizator', $this->config['modelPath']);
         $this->modx->lexicon->load('localizator:default');
     }
 
-	// prepare text for curl request
-	function translator_prepare($text, $limit = 2000) {
-	    if ($limit > 0) {
-	        $ret = array();
-	        $limiten = mb_strlen($text, "UTF-8");
-	        for ($i = 0; $i < $limiten; $i += $limit) {
-	            $ret[] = mb_substr($text, $i, $limit, "UTF-8");
-	        }
-	        return $ret;
-	    }
-	    return preg_split("//u", $text, -1, PREG_SPLIT_NO_EMPTY);
+
+	public function translate($text, $from, $to) 
+    { 
+		return $this->translator->translate($text, $from = '', $to = '');
 	}
 
-	// https://tech.yandex.ru/translate/doc/dg/concepts/About-docpage/
-	function translator_Yandex($text, $from, $to) {
-		if(!$text) return;
-		$output = '';
-		$data = array(
-			'key' => $this->modx->getOption('localizator_key_yandex'),
-		    'lang' => $from . '-' . $to,
-		    'format' => 'html',
-		);
-
-		$text = $this->translator_prepare($text);
-		foreach($text as $part) {
-			$data['text'] = $part;
-			$ch = curl_init('https://translate.yandex.net/api/v1.5/tr.json/translate');
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data,'','&'));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$response = curl_exec($ch);
-			$response = json_decode($response, true);
-			if($response['code'] == 200) {
-				$output .= implode('', $response['text']);
-			} else {
-				$this->modx->log(1, 'localizator: yandex error - ' . $response['code'] .', see https://tech.yandex.ru/translate/doc/dg/reference/translate-docpage/');
-			}
-		}
-
-		return $output;
-	}
-
-	function createForm(&$formtabs, &$record, &$allfields, &$categories, $scriptProperties) {
+    
+	public function createForm(&$formtabs, &$record, &$allfields, &$categories, $scriptProperties) 
+    {
 
         $input_prefix = $this->modx->getOption('input_prefix', $scriptProperties, '');
         $input_prefix = !empty($input_prefix) ? $input_prefix . '_' : '';
@@ -275,9 +244,9 @@ class localizator
 
 
 
-    function getFieldSource($field, &$tv) {
+    public function getFieldSource($field, &$tv) 
+    {
         //source from config
-
         $sourcefrom = isset($field['sourceFrom']) && !empty($field['sourceFrom']) ? $field['sourceFrom'] : 'config';
 
         if ($sourcefrom == 'config' && isset($field['sources'])) {
@@ -308,7 +277,7 @@ class localizator
         $mediasource = $tv->getSource($this->working_context,false);
         
         //try to get the context-default-media-source
-        if (!$mediasource){
+        if (!$mediasource) {
             $defaultSourceId = null;
             if ($contextSetting = $this->modx->getObject('modContextSetting',array('key'=>'default_media_source','context_key'=>$this->working_context))){
                 $defaultSourceId = $contextSetting->get('value');
@@ -319,7 +288,9 @@ class localizator
         return $mediasource;
     }
 
-    function findLocalization($http_host, &$request){
+
+    public function findLocalization($http_host, &$request)
+    {
         /* @var localizatorLanguage $language */
         $language = null;
 
@@ -401,7 +372,9 @@ class localizator
         return false;
     }
 
-    function findResource($request){
+
+    public function findResource($request)
+    {
         $resourceId = false;
 
         $this->invokeEvent('OnFindLocalizatorResource', array(
@@ -452,4 +425,5 @@ class localizator
             'data' => $params,
         );
     }
+
 }

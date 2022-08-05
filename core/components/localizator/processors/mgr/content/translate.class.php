@@ -5,7 +5,8 @@ class localizatorContentTranslateProcessor extends modProcessor {
     /* @var localizator $localizator */
     public $localizator;
 
-    public function process() {
+    public function process() 
+	{
 
 		$this->localizator = $this->modx->getService('localizator');
 
@@ -30,22 +31,15 @@ class localizatorContentTranslateProcessor extends modProcessor {
 		$translate_fields = explode(',', $this->modx->getOption('localizator_translate_fields', null, 'pagetitle,longtitle,menutitle,seotitle,keywords,introtext,description,content'));
 
 
-        $time = time();
-        $time_limit = @ini_get('max_execution_time') - 20;
-        if ($time_limit <= 5) {
-            $time_limit = 5;
-        }
-        $start = $this->getProperty('start', 0);   
+        $processed = 0; 
 
         $c = $this->modx->newQuery('localizatorLanguage');
-        if ($start == 0) {
-            //$this->cleanTables();
-        } else {
-            $c->limit(1000000, $start);
-        }
+        $c->limit(1000000); 
 		$c->where(array(
 			'key:!=' => $default_language
 		));
+		
+		$total = $this->modx->getCount('localizatorLanguage', $c);
 
 		$defaultTVs = $default_content->loadTVs();
 
@@ -69,7 +63,7 @@ class localizatorContentTranslateProcessor extends modProcessor {
 					if(empty($val)) continue;
 					if(empty($current) || !empty($current) && $translate_translated_fields) {
 						if (isset($this->modx->map['localizatorContent']['fieldMeta'][$field])){
-							$contentData[$field] = $this->localizator->translator_Yandex($val, $default_language, ($language->cultureKey ?: $language->key));
+							$contentData[$field] = $this->localizator->translate($val, $default_language, ($language->cultureKey ?: $language->key));
 						}
 						elseif (isset($defaultTVs[$field])){
 							if ($tv = $this->modx->getObject('modTemplateVar', ['name' => $field])){
@@ -106,7 +100,7 @@ class localizatorContentTranslateProcessor extends modProcessor {
 					$val = $default_content->get($field);
 					if(!empty($val)) {
 						if (isset($this->modx->map['localizatorContent']['fieldMeta'][$field])){
-							$contentData[$field] = $this->localizator->translator_Yandex($val, $default_language, ($language->cultureKey ?: $language->key));
+							$contentData[$field] = $this->localizator->translate($val, $default_language, ($language->cultureKey ?: $language->key));
 						}
 						elseif (isset($defaultTVs[$field])){
 							if ($tv = $this->modx->getObject('modTemplateVar', ['name' => $field])){
@@ -127,20 +121,20 @@ class localizatorContentTranslateProcessor extends modProcessor {
 	            }
 			}
 
-			$start++;
-			if ((time() - $time) >= $time_limit) {
-                return $this->cleanup($start);
-            }
+			$processed++; 
 		}
 
-		return $this->cleanup($start);
+        return $this->success('', array(
+            'total' => $total,
+            'processed' => $processed,
+        ));
     }
 
     public function translateTV(modTemplateVar $tvvar, $default_language, $language){
     	$type = $tvvar->get('type');
     	$val = $tvvar->get('value');
     	if (in_array($type, ['text', 'textarea', 'richtext'])){
-    		return $this->localizator->translator_Yandex($val, $default_language, $language);
+    		return $this->localizator->translate($val, $default_language, $language);
     	}
     	elseif($type == 'migx'){
     		$this->modx->addPackage('migx', MODX_CORE_PATH . 'components/migx/model/');
@@ -200,19 +194,6 @@ class localizatorContentTranslateProcessor extends modProcessor {
     	}
     }
 
-    public function cleanup($processed = 0)
-    {
-		$default_language = $this->modx->getOption('localizator_default_language');
-		$c = $this->modx->newQuery('localizatorLanguage');
-		$c->where(array('key:!=' => $default_language));
-		$total = $this->modx->getCount('localizatorLanguage', $c);
-
-        return $this->success('', array(
-            'total' => $total,
-            'processed' => $processed,
-        ));
-    }
-
 }
 
-return 'localizatorContentTranslateProcessor';
+return 'localizatorContentTranslateProcessor';  
