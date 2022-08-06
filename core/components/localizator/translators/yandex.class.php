@@ -18,10 +18,6 @@ class Yandex
 		$this->config = array_merge(array(
 			'key' => $this->modx->getOption('localizator_key_yandex')
 		), $config);
-
-		if (!$this->config['key']) {
-			$this->modx->log(1, 'localizator: yandex error - yandex api key not found in system setting');
-		}
 	}
 
 
@@ -34,6 +30,11 @@ class Yandex
 	 */
 	public function translate($text, $from, $to)
 	{
+
+		if (!$this->config['key']) {
+			return $this->modx->error->failure($this->modx->lexicon('localizator_item_err_yandex_key'));
+		}
+
 		if (!$text) return;
 		$output = '';
 		$data = array(

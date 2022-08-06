@@ -24,6 +24,7 @@ $_lang['localizator_translate'] = 'Автоматический перевод';
 $_lang['localizator_translate_confirm'] = 'Вы действительно хотите выполнить автоматический перевод? Эта операция может занять много времени.';
 $_lang['localizator_translate_wait'] = 'Выполняется автоматический перевод';
 $_lang['localizator_translate_wait_ext'] = 'Перевод...';
+$_lang['localizator_translate_processed'] = 'Обработано строк: ';
 $_lang['localizator_add'] = 'Добавить перевод';
 $_lang['localizator_error'] = 'Ошибка';
 
@@ -61,6 +62,9 @@ $_lang['localizator_item_err_nf'] = 'Запись не найдена';
 $_lang['localizator_item_err_ns'] = 'Не указана запись';
 $_lang['localizator_item_err_remove'] = 'Ошибка при удалении';
 $_lang['localizator_item_err_save'] = 'Ошибка при сохранении';
+$_lang['localizator_item_err_no_line'] = 'Для автоматического перевода необходимо добавить хотя бы одну запись в таблицу';
+$_lang['localizator_item_err_default_language'] = 'Не указана опция localizator_default_language, невозможно определить исходный языка для перевода';
+$_lang['localizator_item_err_yandex_key'] = 'Ошибка при переводе - не указан yandex api key в системных настройках';
 
 $_lang['localizator_grid_search'] = 'Поиск';
 $_lang['localizator_grid_actions'] = 'Действия';

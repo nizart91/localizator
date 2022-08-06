@@ -16,13 +16,13 @@ class localizatorContentTranslateProcessor extends modProcessor
 		}
 
 		if (!$default_language = $this->modx->getOption('localizator_default_language')) {
-			return $this->failure('Не указана опция localizator_default_language, невозможно определить исходный языка для перевода');
+			return $this->failure($this->modx->lexicon('localizator_item_err_default_language'));
 		}
 
 		/* @var localizatorContent $default_content */
 		$default_content = $this->modx->getObject('localizatorContent', array('key' => $default_language, 'resource_id' => $resource_id));
 		if (!$default_content) {
-			return $this->failure('Для автоматического перевода необходимо добавить хотя бы одну запись в таблицу');
+			return $this->failure($this->modx->lexicon('localizator_item_err_no_line'));
 		}
 
 		$loc_permission = $this->modx->getOption('localizator_check_permissions', null, false, true);

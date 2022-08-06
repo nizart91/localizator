@@ -8,7 +8,7 @@ class localizatorLexiconTranslateProcessor extends modProcessor
 		$this->localizator = $this->modx->getService('localizator');
 
 		if (!$default_language = $this->modx->getOption('localizator_default_language')) {
-			return $this->failure('Не указана опция localizator_default_language, невозможно определить исходный языка для перевода');
+			return $this->failure($this->modx->lexicon('localizator_item_err_default_language'));
 		}
 
 		$tranlate_all = $this->modx->getOption('localizator_translate_translated_fields');

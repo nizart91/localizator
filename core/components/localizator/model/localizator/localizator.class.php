@@ -52,9 +52,16 @@ class localizator
     }
 
 
+    /**
+     * @param string $text
+     * @param string $from
+     * @param string $to
+     *
+     * @return string
+     */
     public function translate($text, $from, $to)
     {
-        return $this->translator->translate($text, $from = '', $to = '');
+        return $this->translator->translate($text, $from, $to);
     }
 
 

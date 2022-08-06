@@ -188,12 +188,22 @@ Ext.extend(localizator.grid.Lexicon, MODx.grid.Grid, {
                             );
                             this._translation(response.object['processed']);
                         }
+
+                        if (response.message) {
+                            MODx.msg.status({
+                                title: '',
+                                message: response.message,
+                                delay: 7
+                            });
+                        } else {
+                            MODx.msg.status({
+                                title: _('localizator_translate_wait_ext'),
+                                message: _('localizator_translate_processed') + response.object['processed'],
+                                delay: 3
+                            });
+                        }
  
-                        MODx.msg.status({
-                            title: _('localizator_translate_wait_ext'),
-                            message: _('localizator_translate_processed') + response.object['processed'],
-                            delay: 3
-                        });
+                        
 
                     }, scope: this
                 },

@@ -24,6 +24,7 @@ $_lang['localizator_translate'] = 'Automatic translation';
 $_lang['localizator_translate_confirm'] = 'Do you really want to perform automatic translation? This operation can take a long time.';
 $_lang['localizator_translate_wait'] = 'Automatic translation';
 $_lang['localizator_translate_wait_ext'] = 'Translated...';
+$_lang['localizator_translate_processed'] = 'Rows processed: ';
 $_lang['localizator_add'] = 'Add a translation';
 $_lang['localizator_error'] = 'Error';
 
@@ -61,6 +62,9 @@ $_lang['localizator_item_err_nf'] = 'Record not found';
 $_lang['localizator_item_err_ns'] = 'No record specified';
 $_lang['localizator_item_err_remove'] = 'No record specified';
 $_lang['localizator_item_err_save'] = 'Save failed';
+$_lang['localizator_item_err_no_line'] = 'For automatic translation, you must add at least one entry to the grid';
+$_lang['localizator_item_err_default_language'] = 'Option localizator_default_language not specified, unable to determine source language for translation';
+$_lang['localizator_item_err_yandex_key'] = 'Translation error - yandex api key not specified in system settings';
 
 $_lang['localizator_grid_search'] = 'Search';
 $_lang['localizator_grid_actions'] = 'Actions';
