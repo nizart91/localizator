@@ -9,6 +9,9 @@ $_lang['setting_localizator_default_language_desc'] = 'Key localization for prim
 $_lang['setting_localizator_key_yandex'] = 'API key for Yandex';
 $_lang['setting_localizator_key_yandex_desc'] = 'API key for Yandex translator, <a href="https://tech.yandex.ru/keys/get/?service=trnsl" target="_blank">API key</a>';
 
+$_lang['setting_localizator_key_google'] = 'API key for Google';
+$_lang['setting_localizator_key_google_desc'] = 'API key for Google translator, <a href="https://cloud.google.com/translate/" target="_blank">Google cloud</a>';
+
 $_lang['setting_localizator_default_translator'] = 'Translator automatic translation';
 $_lang['setting_localizator_default_translator_desc'] = 'So far available only to Yandex';
 

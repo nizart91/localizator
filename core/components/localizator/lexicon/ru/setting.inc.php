@@ -9,6 +9,9 @@ $_lang['setting_localizator_default_language_desc'] = 'Ключ локализа
 $_lang['setting_localizator_key_yandex'] = 'API ключ для Яндекс';
 $_lang['setting_localizator_key_yandex_desc'] = 'API ключ для Яндекс переводчика, <a href="https://tech.yandex.ru/keys/get/?service=trnsl" target="_blank">API ключ</a>';
 
+$_lang['setting_localizator_key_google'] = 'API ключ для Google';
+$_lang['setting_localizator_key_google_desc'] = 'API ключ для Google переводчика, <a href="https://cloud.google.com/translate/" target="_blank">Google cloud</a>';
+
 $_lang['setting_localizator_default_translator'] = 'Переводчик для автоматического перевода';
 $_lang['setting_localizator_default_translator_desc'] = 'Пока что доступен только Yandex';
 
