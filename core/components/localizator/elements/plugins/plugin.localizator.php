@@ -234,6 +234,7 @@ switch($modx->event->name) {
                     ->where(array(
                         "resource_id" => $id,
                         "key" => $key,
+                        "active" => 1,
                     ))
                     ->select($field);
                 if ($q->prepare() && $q->stmt->execute()){
