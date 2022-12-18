@@ -30,6 +30,10 @@ $tmp = array(
         'xtype' => 'textfield',
         'area' => 'localizator_translator',
     ),
+    'key_deepl' => array(
+        'xtype' => 'textfield',
+        'area' => 'localizator_translator',
+    ),
     'translate_translated' => array(
         'xtype' => 'combo-boolean',
         'value' => false,

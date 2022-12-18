@@ -12,8 +12,11 @@ $_lang['setting_localizator_key_yandex_desc'] = 'API key for Yandex translator, 
 $_lang['setting_localizator_key_google'] = 'API key for Google';
 $_lang['setting_localizator_key_google_desc'] = 'API key for Google translator, <a href="https://cloud.google.com/translate/" target="_blank">Google cloud</a>';
 
+$_lang['setting_localizator_key_deepl'] = 'API key for Deepl';
+$_lang['setting_localizator_key_deepl_desc'] = 'API key for Deepl , <a href="https://www.deepl.com/ru/pro/select-country/" target="_blank">Get key</a>';
+
 $_lang['setting_localizator_default_translator'] = 'Translator automatic translation';
-$_lang['setting_localizator_default_translator_desc'] = 'So far available only to Yandex';
+$_lang['setting_localizator_default_translator_desc'] = 'Possible values: Yandex, Google, DeepL, or leave blank to copy values';
 
 $_lang['setting_localizator_translate_translated'] = 'Complement translated localization?';
 $_lang['setting_localizator_translate_translated_desc'] = 'When you use automatic translation translate blank fields from existing localisations';

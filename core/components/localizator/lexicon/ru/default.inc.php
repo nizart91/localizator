@@ -64,8 +64,9 @@ $_lang['localizator_item_err_remove'] = 'Ошибка при удалении';
 $_lang['localizator_item_err_save'] = 'Ошибка при сохранении';
 $_lang['localizator_item_err_no_line'] = 'Для автоматического перевода необходимо добавить хотя бы одну запись в таблицу';
 $_lang['localizator_item_err_default_language'] = 'Не указана опция localizator_default_language, невозможно определить исходный языка для перевода';
-$_lang['localizator_item_err_yandex_key'] = 'Ошибка при переводе - не указан yandex api key в системных настройках';
-$_lang['localizator_item_err_google_key'] = 'Ошибка при переводе - не указан google api key в системных настройках';
+$_lang['localizator_item_err_yandex_key'] = 'Ошибка при переводе - не указан Yandex api key в системных настройках';
+$_lang['localizator_item_err_google_key'] = 'Ошибка при переводе - не указан Google api key в системных настройках';
+$_lang['localizator_item_err_deepl_key'] = 'Ошибка при переводе - не указан Deepl api key в системных настройках';
 
 $_lang['localizator_grid_search'] = 'Поиск';
 $_lang['localizator_grid_actions'] = 'Действия';

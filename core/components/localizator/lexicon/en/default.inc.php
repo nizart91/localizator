@@ -64,8 +64,9 @@ $_lang['localizator_item_err_remove'] = 'No record specified';
 $_lang['localizator_item_err_save'] = 'Save failed';
 $_lang['localizator_item_err_no_line'] = 'For automatic translation, you must add at least one entry to the grid';
 $_lang['localizator_item_err_default_language'] = 'Option localizator_default_language not specified, unable to determine source language for translation';
-$_lang['localizator_item_err_yandex_key'] = 'Translation error - yandex api key not specified in system settings';
-$_lang['localizator_item_err_google_key'] = 'Translation error - google api key not specified in system settings';
+$_lang['localizator_item_err_yandex_key'] = 'Translation error - Yandex api key not specified in system settings';
+$_lang['localizator_item_err_google_key'] = 'Translation error - Google api key not specified in system settings';
+$_lang['localizator_item_err_deepl_key'] = 'Translation error - Deepl api key not specified in system settings';
 
 $_lang['localizator_grid_search'] = 'Search';
 $_lang['localizator_grid_actions'] = 'Actions';

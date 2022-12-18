@@ -1,11 +1,13 @@
 Changelog for localizator.
 
 
-1.1.0-beta
+1.0.9-beta
 ==============
 - Moved yandex translator in custom class
 - Added simple copying of strings, without translation
 - PSR-12 compatible document formatting 
+- Added google translator
+- Added deepal translator (text mode)
 
 1.0.8-beta
 ==============

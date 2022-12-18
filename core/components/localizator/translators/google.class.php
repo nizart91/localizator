@@ -58,7 +58,7 @@ class Google
 		if ($response['code'] == 200) {
 			$output = $response['data']['translations'][0]['translatedText'];
 		} else {
-			$this->modx->log(1, 'localizator: google error - ' . $response['error']['errors'][0]['message']);
+			$this->modx->log(1, 'localizator: google translate error - ' . $response['error']['errors'][0]['message']);
 		}
 
 		return $output;

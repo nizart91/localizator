@@ -45,7 +45,7 @@ class localizatorLexiconTranslateProcessor extends modProcessor
 				));
 
 				// если уже есть запись и указано не перезаписывать - прерываем цикл
-				if ($tmp && !$tranlate_all) {
+				if ($tmp->value && !$tranlate_all) {
 					break;
 				}
 
@@ -60,7 +60,7 @@ class localizatorLexiconTranslateProcessor extends modProcessor
 				}
 
 				$translation = $this->localizator->translate($entry->value, $default_language, $language);
-				if (!$translation) continue;
+				if (!$translation || is_array($translation)) continue;
 
 				$tmp->set('value', $translation);
 				$tmp->save();
