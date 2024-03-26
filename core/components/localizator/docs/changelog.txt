@@ -1,5 +1,14 @@
 Changelog for localizator.
 
+
+1.0.9-beta
+==============
+- Moved yandex translator in custom class
+- Added simple copying of strings, without translation
+- PSR-12 compatible document formatting 
+- Added google translator
+- Added deepl translator (text mode)
+
 1.0.8-beta
 ==============
 - Fixing 500 error when going to an unpublished resource by link (by Ibochkarev)

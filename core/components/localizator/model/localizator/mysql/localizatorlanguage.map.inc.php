@@ -1,15 +1,15 @@
 <?php
-$xpdo_meta_map['localizatorLanguage']= array (
+$xpdo_meta_map['localizatorLanguage'] = array(
   'package' => 'localizator',
   'version' => '1.1',
   'table' => 'localizator_languages',
   'extends' => 'xPDOSimpleObject',
-  'tableMeta' => 
-  array (
+  'tableMeta' =>
+  array(
     'engine' => 'MyISAM',
   ),
-  'fields' => 
-  array (
+  'fields' =>
+  array(
     'name' => '',
     'key' => '',
     'cultureKey' => '',
@@ -17,49 +17,49 @@ $xpdo_meta_map['localizatorLanguage']= array (
     'description' => '',
     'active' => 1,
   ),
-  'fieldMeta' => 
-  array (
-    'name' => 
-    array (
+  'fieldMeta' =>
+  array(
+    'name' =>
+    array(
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
     ),
-    'key' => 
-    array (
+    'key' =>
+    array(
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
     ),
-    'cultureKey' => 
-    array (
+    'cultureKey' =>
+    array(
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
       'null' => true,
       'default' => '',
     ),
-    'http_host' => 
-    array (
+    'http_host' =>
+    array(
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
     ),
-    'description' => 
-    array (
+    'description' =>
+    array(
       'dbtype' => 'text',
       'phptype' => 'string',
       'null' => true,
       'default' => '',
     ),
-    'active' => 
-    array (
+    'active' =>
+    array(
       'dbtype' => 'tinyint',
       'precision' => '1',
       'phptype' => 'boolean',
@@ -67,34 +67,34 @@ $xpdo_meta_map['localizatorLanguage']= array (
       'default' => 1,
     ),
   ),
-  'indexes' => 
-  array (
-    'key' => 
-    array (
+  'indexes' =>
+  array(
+    'key' =>
+    array(
       'alias' => 'key',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
-      'columns' => 
-      array (
-        'key' => 
-        array (
+      'columns' =>
+      array(
+        'key' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => false,
         ),
       ),
     ),
-    'cultureKey' => 
-    array (
+    'cultureKey' =>
+    array(
       'alias' => 'cultureKey',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
-      'columns' => 
-      array (
-        'cultureKey' => 
-        array (
+      'columns' =>
+      array(
+        'cultureKey' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => true,

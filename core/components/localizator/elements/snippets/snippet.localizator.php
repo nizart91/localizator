@@ -9,7 +9,7 @@ $elementSet = array();
 if (strpos($elementName, '@') !== false) {
     list($elementName, $elementSet) = explode('@', $elementName);
 }
-if ($elementName == 'msProducts'){
+if ($elementName == 'msProducts') {
     $class = $scriptProperties['class'] = 'msProduct';
 }
 
@@ -56,7 +56,9 @@ if (!empty($elementName) && $element = $modx->getObject('modSnippet', array('nam
     $elementPropertySet = !empty($elementSet)
         ? $element->getPropertySet($elementSet)
         : array();
-    if (!is_array($elementPropertySet)) {$elementPropertySet = array();}
+    if (!is_array($elementPropertySet)) {
+        $elementPropertySet = array();
+    }
     $params = array_merge(
         $elementProperties,
         $elementPropertySet,
@@ -65,8 +67,7 @@ if (!empty($elementName) && $element = $modx->getObject('modSnippet', array('nam
     );
     $element->setCacheable(false);
     return $element->process($params);
-}
-else {
-    $modx->log(modX::LOG_LEVEL_ERROR, '[Localizator] Could not find main snippet with name: "'.$elementName.'"');
+} else {
+    $modx->log(modX::LOG_LEVEL_ERROR, '[Localizator] Could not find main snippet with name: "' . $elementName . '"');
     return '';
 }

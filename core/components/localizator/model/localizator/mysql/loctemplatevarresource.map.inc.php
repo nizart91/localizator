@@ -1,24 +1,24 @@
 <?php
-$xpdo_meta_map['locTemplateVarResource']= array (
+$xpdo_meta_map['locTemplateVarResource'] = array(
   'package' => 'localizator',
   'version' => '1.1',
   'table' => 'localizator_tmplvar_contentvalues',
   'extends' => 'xPDOSimpleObject',
-  'tableMeta' => 
-  array (
+  'tableMeta' =>
+  array(
     'engine' => 'MyISAM',
   ),
-  'fields' => 
-  array (
+  'fields' =>
+  array(
     'key' => '',
     'tmplvarid' => 0,
     'contentid' => 0,
     'value' => NULL,
   ),
-  'fieldMeta' => 
-  array (
-    'key' => 
-    array (
+  'fieldMeta' =>
+  array(
+    'key' =>
+    array(
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
@@ -26,8 +26,8 @@ $xpdo_meta_map['locTemplateVarResource']= array (
       'default' => '',
       'index' => 'index',
     ),
-    'tmplvarid' => 
-    array (
+    'tmplvarid' =>
+    array(
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
@@ -35,8 +35,8 @@ $xpdo_meta_map['locTemplateVarResource']= array (
       'default' => 0,
       'index' => 'index',
     ),
-    'contentid' => 
-    array (
+    'contentid' =>
+    array(
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
@@ -44,85 +44,85 @@ $xpdo_meta_map['locTemplateVarResource']= array (
       'default' => 0,
       'index' => 'index',
     ),
-    'value' => 
-    array (
+    'value' =>
+    array(
       'dbtype' => 'mediumtext',
       'phptype' => 'string',
       'null' => false,
     ),
   ),
-  'indexes' => 
-  array (
-    'key' => 
-    array (
+  'indexes' =>
+  array(
+    'key' =>
+    array(
       'alias' => 'key',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
-      'columns' => 
-      array (
-        'key' => 
-        array (
+      'columns' =>
+      array(
+        'key' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => false,
         ),
       ),
     ),
-    'tmplvarid' => 
-    array (
+    'tmplvarid' =>
+    array(
       'alias' => 'tmplvarid',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
-      'columns' => 
-      array (
-        'tmplvarid' => 
-        array (
+      'columns' =>
+      array(
+        'tmplvarid' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => false,
         ),
       ),
     ),
-    'contentid' => 
-    array (
+    'contentid' =>
+    array(
       'alias' => 'contentid',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
-      'columns' => 
-      array (
-        'contentid' => 
-        array (
+      'columns' =>
+      array(
+        'contentid' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => false,
         ),
       ),
     ),
-    'tv_cnt' => 
-    array (
+    'tv_cnt' =>
+    array(
       'alias' => 'tv_cnt',
       'primary' => false,
       'unique' => true,
       'type' => 'BTREE',
-      'columns' => 
-      array (
-        'key' => 
-        array (
+      'columns' =>
+      array(
+        'key' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => false,
         ),
-        'tmplvarid' => 
-        array (
+        'tmplvarid' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => false,
         ),
-        'contentid' => 
-        array (
+        'contentid' =>
+        array(
           'length' => '',
           'collation' => 'A',
           'null' => false,
@@ -130,18 +130,18 @@ $xpdo_meta_map['locTemplateVarResource']= array (
       ),
     ),
   ),
-  'aggregates' => 
-  array (
-    'TemplateVar' => 
-    array (
+  'aggregates' =>
+  array(
+    'TemplateVar' =>
+    array(
       'class' => 'modTemplateVar',
       'local' => 'tmplvarid',
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),
-    'Resource' => 
-    array (
+    'Resource' =>
+    array(
       'class' => 'modResource',
       'local' => 'contentid',
       'foreign' => 'id',

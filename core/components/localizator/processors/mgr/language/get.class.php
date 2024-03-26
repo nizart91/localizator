@@ -22,7 +22,6 @@ class localizatorLanguageGetProcessor extends modObjectGetProcessor
 
         return parent::process();
     }
-
 }
 
 return 'localizatorLanguageGetProcessor';

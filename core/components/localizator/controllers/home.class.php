@@ -15,8 +15,11 @@ class localizatorHomeManagerController extends modExtraManagerController
      */
     public function initialize()
     {
-        $path = $this->modx->getOption('localizator_core_path', null,
-                $this->modx->getOption('core_path') . 'components/localizator/') . 'model/localizator/';
+        $path = $this->modx->getOption(
+            'localizator_core_path',
+            null,
+            $this->modx->getOption('core_path') . 'components/localizator/'
+        ) . 'model/localizator/';
         $this->localizator = $this->modx->getService('localizator', 'localizator', $path);
         parent::initialize();
     }
@@ -61,8 +64,8 @@ class localizatorHomeManagerController extends modExtraManagerController
         $this->addJavascript($this->localizator->config['jsUrl'] . 'mgr/misc/combo.js');
         $this->addJavascript($this->localizator->config['jsUrl'] . 'mgr/widgets/languages.grid.js');
 
-		//$this->addJavascript('/manager/assets/modext/workspace/lexicon/lexicon.grid.js');
-		$this->addJavascript($this->localizator->config['jsUrl'] . 'mgr/widgets/lexicon.grid.js');
+        //$this->addJavascript('/manager/assets/modext/workspace/lexicon/lexicon.grid.js');
+        $this->addJavascript($this->localizator->config['jsUrl'] . 'mgr/widgets/lexicon.grid.js');
 
         $this->addJavascript($this->localizator->config['jsUrl'] . 'mgr/widgets/home.panel.js');
         $this->addJavascript($this->localizator->config['jsUrl'] . 'mgr/sections/home.js');

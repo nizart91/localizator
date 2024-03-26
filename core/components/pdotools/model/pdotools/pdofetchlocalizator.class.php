@@ -6,7 +6,7 @@ if (!class_exists('pdoFetch')) {
 
 class pdoFetchLocalizator extends pdoFetch
 {
-	public function addTVs()
+    public function addTVs()
     {
         parent::addTVs();
 
@@ -22,12 +22,12 @@ class pdoFetchLocalizator extends pdoFetch
             if ($q->prepare() && $q->stmt->execute()) {
                 $this->config['localizatorTVs'] = $q->stmt->fetchAll(PDO::FETCH_COLUMN);
             }
-            foreach ($this->config['localizatorTVs'] as $name){
+            foreach ($this->config['localizatorTVs'] as $name) {
                 $name = strtolower($name);
                 $alias = 'TV' . $name;
-                if (isset($this->config['tvsJoin'][$name])){
+                if (isset($this->config['tvsJoin'][$name])) {
                     $this->config['tvsJoin'][$name]['class'] = 'locTemplateVarResource';
-                    $this->config['tvsJoin'][$name]['on'] .= " AND `{$alias}`.`key` = ".$this->modx->quote($this->config['localizator_key']);
+                    $this->config['tvsJoin'][$name]['on'] .= " AND `{$alias}`.`key` = " . $this->modx->quote($this->config['localizator_key']);
                 }
             }
         }
@@ -43,13 +43,14 @@ class pdoFetchLocalizator extends pdoFetch
     {
         $time = microtime(true);
 
-        if (isset($this->config['localizatorTVs']) && !empty($this->config['localizatorTVs']) && 
+        if (
+            isset($this->config['localizatorTVs']) && !empty($this->config['localizatorTVs']) &&
             (!empty($this->config['includeTVs']) && (!empty($this->config['prepareTVs']) || !empty($this->config['processTVs'])))
-        ){
+        ) {
             $tvs = array_map('trim', explode(',', $this->config['includeTVs']));
             $prepare = ($this->config['prepareTVs'] == 1)
-                    ? $tvs
-                    : array_map('trim', explode(',', $this->config['prepareTVs']));
+                ? $tvs
+                : array_map('trim', explode(',', $this->config['prepareTVs']));
             $process = ($this->config['processTVs'] == 1)
                 ? $tvs
                 : array_map('trim', explode(',', $this->config['processTVs']));
@@ -58,8 +59,8 @@ class pdoFetchLocalizator extends pdoFetch
             $this->config['processTVs'] = implode(',', array_diff($process, $processloctvs));
             $this->config['prepareTVs'] = implode(',', array_diff($prepare, $processloctvs));
 
-            if (!empty($processloctvs)){
-                foreach ($rows as & $row) {
+            if (!empty($processloctvs)) {
+                foreach ($rows as &$row) {
                     // Extract JSON fields
                     if ($this->config['decodeJSON']) {
                         foreach ($row as $k => $v) {
@@ -96,11 +97,10 @@ class pdoFetchLocalizator extends pdoFetch
                         $row[$key] = localizatorContent::renderTVOutput($this->modx, $templateVar, $row[$key], $row['id']);
                     }
                 }
-                $this->addTime('Processed Localizator TVs: '.implode(', ', $processloctvs), microtime(true) - $time);
+                $this->addTime('Processed Localizator TVs: ' . implode(', ', $processloctvs), microtime(true) - $time);
             }
         }
-        
+
         return parent::prepareRows($rows);
     }
-
 }

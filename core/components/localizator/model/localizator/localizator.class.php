@@ -10,14 +10,18 @@ class localizator
      * @param modX $modx
      * @param array $config
      */
-    function __construct(modX &$modx, array $config = array())
+    public function __construct(modX &$modx, array $config = array())
     {
-        $this->modx =& $modx;
+        $this->modx = &$modx;
 
-        $corePath = $this->modx->getOption('localizator_core_path', $config,
+        $corePath = $this->modx->getOption(
+            'localizator_core_path',
+            $config,
             $this->modx->getOption('core_path') . 'components/localizator/'
         );
-        $assetsUrl = $this->modx->getOption('localizator_assets_url', $config,
+        $assetsUrl = $this->modx->getOption(
+            'localizator_assets_url',
+            $config,
             $this->modx->getOption('assets_url') . 'components/localizator/'
         );
         $connectorUrl = $assetsUrl . 'connector.php';
@@ -36,62 +40,38 @@ class localizator
             'chunkSuffix' => '.chunk.tpl',
             'snippetsPath' => $corePath . 'elements/snippets/',
             'processorsPath' => $corePath . 'processors/',
+            'translator' => $this->modx->getOption('localizator_default_translator', null, 'SimpleCopy', true),
         ), $config);
+
+        require_once dirname(__FILE__, 3) . '/translators/' . strtolower($this->config['translator']) . '.class.php';
+
+        $this->translator = new $this->config['translator']($this->modx, $this->config);
 
         $this->modx->addPackage('localizator', $this->config['modelPath']);
         $this->modx->lexicon->load('localizator:default');
     }
 
-	// prepare text for curl request
-	function translator_prepare($text, $limit = 2000) {
-	    if ($limit > 0) {
-	        $ret = array();
-	        $limiten = mb_strlen($text, "UTF-8");
-	        for ($i = 0; $i < $limiten; $i += $limit) {
-	            $ret[] = mb_substr($text, $i, $limit, "UTF-8");
-	        }
-	        return $ret;
-	    }
-	    return preg_split("//u", $text, -1, PREG_SPLIT_NO_EMPTY);
-	}
 
-	// https://tech.yandex.ru/translate/doc/dg/concepts/About-docpage/
-	function translator_Yandex($text, $from, $to) {
-		if(!$text) return;
-		$output = '';
-		$data = array(
-			'key' => $this->modx->getOption('localizator_key_yandex'),
-		    'lang' => $from . '-' . $to,
-		    'format' => 'html',
-		);
+    /**
+     * @param string $text
+     * @param string $from
+     * @param string $to
+     *
+     * @return string
+     */
+    public function translate($text, $from, $to)
+    {
+        return $this->translator->translate($text, $from, $to);
+    }
 
-		$text = $this->translator_prepare($text);
-		foreach($text as $part) {
-			$data['text'] = $part;
-			$ch = curl_init('https://translate.yandex.net/api/v1.5/tr.json/translate');
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data,'','&'));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$response = curl_exec($ch);
-			$response = json_decode($response, true);
-			if($response['code'] == 200) {
-				$output .= implode('', $response['text']);
-			} else {
-				$this->modx->log(1, 'localizator: yandex error - ' . $response['code'] .', see https://tech.yandex.ru/translate/doc/dg/reference/translate-docpage/');
-			}
-		}
 
-		return $output;
-	}
-
-	function createForm(&$formtabs, &$record, &$allfields, &$categories, $scriptProperties) {
+    public function createForm(&$formtabs, &$record, &$allfields, &$categories, $scriptProperties)
+    {
 
         $input_prefix = $this->modx->getOption('input_prefix', $scriptProperties, '');
         $input_prefix = !empty($input_prefix) ? $input_prefix . '_' : '';
         $rte = isset($scriptProperties['which_editor']) ? $scriptProperties['which_editor'] : $this->modx->getOption('which_editor', '', $this->modx->_userConfig);
-        
+
 
         foreach ($formtabs as $tabid => $subtab) {
             $tabs = array();
@@ -108,7 +88,7 @@ class localizator
 
                         /*generate unique tvid, must be numeric*/
                         /*todo: find a better solution*/
-                        $field['tv_id'] = 'localizator_'.$fieldname;
+                        $field['tv_id'] = 'localizator_' . $fieldname;
                         $params = array();
                         $tv = false;
 
@@ -131,9 +111,9 @@ class localizator
                         $tv->set('name', ($fieldname == 'content' ? 'localizator_content' : $fieldname));
 
                         $o_type = $tv->get('type');
-                        
+
                         if ($tv->get('type') == 'richtext') {
-                            $tv->set('type', 'migx' . str_replace(' ','_',strtolower($rte)));
+                            $tv->set('type', 'migx' . str_replace(' ', '_', strtolower($rte)));
                         }
 
                         //we change the phptype, that way we can use any id, not only integers (issues on windows-systems with big integers!)
@@ -182,7 +162,7 @@ class localizator
                             $tv->set('description', $field['description']);
                         }
 
-                        
+
                         $allfield = array();
                         $allfield['field'] = $fieldname;
                         $allfield['tv_id'] = $field['tv_id'];
@@ -191,7 +171,7 @@ class localizator
 
                         $field['array_tv_id'] = $field['tv_id'] . '[]';
                         $mediasource = $this->getFieldSource($field, $tv);
-                        
+
                         $tv->setSource($mediasource);
                         $tv->set('id', $field['tv_id']);
 
@@ -268,16 +248,14 @@ class localizator
                 'id' => $tabid,
                 'tabs' => $tabs,
             );
-
         }
-
     }
 
 
 
-    function getFieldSource($field, &$tv) {
+    public function getFieldSource($field, &$tv)
+    {
         //source from config
-
         $sourcefrom = isset($field['sourceFrom']) && !empty($field['sourceFrom']) ? $field['sourceFrom'] : 'config';
 
         if ($sourcefrom == 'config' && isset($field['sources'])) {
@@ -295,31 +273,32 @@ class localizator
                     }
                 }
             }
-
         }
-        
+
         if (isset($sources[$this->working_context]) && !empty($sources[$this->working_context])) {
             //try using field-specific mediasource from config
             if ($mediasource = $this->modx->getObject('sources.modMediaSource', $sources[$this->working_context])) {
                 return $mediasource;
             }
         }
-        
-        $mediasource = $tv->getSource($this->working_context,false);
-        
+
+        $mediasource = $tv->getSource($this->working_context, false);
+
         //try to get the context-default-media-source
-        if (!$mediasource){
+        if (!$mediasource) {
             $defaultSourceId = null;
-            if ($contextSetting = $this->modx->getObject('modContextSetting',array('key'=>'default_media_source','context_key'=>$this->working_context))){
+            if ($contextSetting = $this->modx->getObject('modContextSetting', array('key' => 'default_media_source', 'context_key' => $this->working_context))) {
                 $defaultSourceId = $contextSetting->get('value');
             }
-            $mediasource = modMediaSource::getDefaultSource($this->modx,$defaultSourceId);
+            $mediasource = modMediaSource::getDefaultSource($this->modx, $defaultSourceId);
         }
 
         return $mediasource;
     }
 
-    function findLocalization($http_host, &$request){
+
+    public function findLocalization($http_host, &$request)
+    {
         /* @var localizatorLanguage $language */
         $language = null;
 
@@ -334,8 +313,8 @@ class localizator
 
         if (!$language) {
             $host = $find = $http_host;
-            if($request) {
-                if(strpos($request, '/') !== false) {
+            if ($request) {
+                if (strpos($request, '/') !== false) {
                     // "site.com/en/blog/article" to "site.com/en/"
                     $tmp = explode('/', $request);
                     $find = $host . '/' . $tmp[0] . '/';
@@ -356,19 +335,18 @@ class localizator
         if ($language) {
             if (preg_match("/^(http(s):\/\/)/i", $language->http_host)) {
                 $site_url = $language->http_host;
-            }
-            else
+            } else
                 $site_url = MODX_URL_SCHEME . $language->http_host;
 
-            if (substr($site_url, -1) != '/'){
+            if (substr($site_url, -1) != '/') {
                 $site_url .= '/';
             }
 
             $base_url = '/';
             $parse_url = parse_url($site_url);
-            if (isset($parse_url['path'])){
+            if (isset($parse_url['path'])) {
                 $base_url = $parse_url['path'];
-                if (substr($base_url, -1) != '/'){
+                if (substr($base_url, -1) != '/') {
                     $base_url .= '/';
                 }
             }
@@ -401,7 +379,9 @@ class localizator
         return false;
     }
 
-    function findResource($request){
+
+    public function findResource($request)
+    {
         $resourceId = false;
 
         $this->invokeEvent('OnFindLocalizatorResource', array(

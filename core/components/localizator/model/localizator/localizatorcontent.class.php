@@ -1,5 +1,6 @@
 <?php
-class localizatorContent extends xPDOSimpleObject {
+class localizatorContent extends xPDOSimpleObject
+{
 
     protected $tvs = null;
     protected $TVKeys = null;
@@ -11,13 +12,13 @@ class localizatorContent extends xPDOSimpleObject {
      *
      * @param xPDO $xpdo
      */
-    function __construct(xPDO & $xpdo)
+    public function __construct(xPDO &$xpdo)
     {
         parent::__construct($xpdo);
         $this->_originalFieldMeta = $this->_fieldMeta;
     }
- 
-    public static function getTemplateVarCollection(localizatorContent &$content) 
+
+    public static function getTemplateVarCollection(localizatorContent &$content)
     {
         $c = $content->xpdo->call('localizatorContent', 'prepareTVListCriteria', array(&$content));
 
@@ -32,11 +33,11 @@ class localizatorContent extends xPDOSimpleObject {
         } else {
             $c->select(array(
                 'IF(ISNULL(tvc.value),modTemplateVar.default_text,tvc.value) AS value',
-                $content->get('resource_id').' AS resourceId'
+                $content->get('resource_id') . ' AS resourceId'
             ));
         }
         if (!$content->isNew()) {
-            $c->leftJoin('locTemplateVarResource','tvc',array(
+            $c->leftJoin('locTemplateVarResource', 'tvc', array(
                 'tvc.tmplvarid = modTemplateVar.id',
                 'tvc.contentid' => $content->get('resource_id'),
                 'tvc.key' => $content->get('key'),
@@ -52,7 +53,7 @@ class localizatorContent extends xPDOSimpleObject {
 
 
 
-    public function getTemplateVars() 
+    public function getTemplateVars()
     {
         return $this->xpdo->call('localizatorContent', 'getTemplateVarCollection', array(&$this));
     }
@@ -65,7 +66,7 @@ class localizatorContent extends xPDOSimpleObject {
     {
         $resource = $content->getOne('Resource');
         $c = $content->xpdo->newQuery('modTemplateVar');
-        $c->innerJoin('modTemplateVarTemplate','tvtpl',array(
+        $c->innerJoin('modTemplateVarTemplate', 'tvtpl', array(
             'tvtpl.tmplvarid = modTemplateVar.id',
             'tvtpl.templateid' => $resource->get('template'),
         ));
@@ -97,7 +98,7 @@ class localizatorContent extends xPDOSimpleObject {
             ));
         }
         if (!$content->isNew()) {
-            $c->leftJoin('locTemplateVarResource','tvc',array(
+            $c->leftJoin('locTemplateVarResource', 'tvc', array(
                 'tvc.tmplvarid = modTemplateVar.id',
                 'tvc.contentid' => $content->get('resource_id'),
                 'tvc.key' => $content->get('key'),
@@ -136,8 +137,8 @@ class localizatorContent extends xPDOSimpleObject {
             $c->select('modTemplateVar.id,modTemplateVar.name');
 
             $this->TVKeys = array();
-            if ($c->prepare() && $c->stmt->execute()){
-                while ($tv = $c->stmt->fetch(PDO::FETCH_ASSOC)){
+            if ($c->prepare() && $c->stmt->execute()) {
+                while ($tv = $c->stmt->fetch(PDO::FETCH_ASSOC)) {
                     $this->TVKeys[$tv['id']] = $tv['name'];
                 }
             }
@@ -234,21 +235,21 @@ class localizatorContent extends xPDOSimpleObject {
             /* validation for different types */
             switch ($tv->get('type')) {
                 case 'url':
-                    $value = str_replace(array('ftp://','http://'),'', $value);
-                    $value = $prefix.$value;
+                    $value = str_replace(array('ftp://', 'http://'), '', $value);
+                    $value = $prefix . $value;
                     break;
                 case 'date':
-                    $value = empty($value) ? '' : strftime('%Y-%m-%d %H:%M:%S',strtotime($value));
+                    $value = empty($value) ? '' : strftime('%Y-%m-%d %H:%M:%S', strtotime($value));
                     break;
-                /* ensure tag types trim whitespace from tags */
+                    /* ensure tag types trim whitespace from tags */
                 case 'tag':
                 case 'autotag':
-                    $tags = explode(',',$value);
+                    $tags = explode(',', $value);
                     $newTags = array();
                     foreach ($tags as $tag) {
                         $newTags[] = trim($tag);
                     }
-                    $value = implode(',',$newTags);
+                    $value = implode(',', $newTags);
                     break;
                 default:
                     /* handles checkboxes & multiple selects elements */
@@ -260,16 +261,16 @@ class localizatorContent extends xPDOSimpleObject {
                             }
                             $featureInsert[count($featureInsert)] = $featureItem;
                         }
-                        $value = implode('||',$featureInsert);
+                        $value = implode('||', $featureInsert);
                     }
                     break;
             }
 
             /* if different than default and set, set TVR record */
             $default = $tv->processBindings($tv->get('default_text'), $this->get('resource_id'));
-            if (strcmp($value,$default) != 0) {
+            if (strcmp($value, $default) != 0) {
                 /* update the existing record */
-                $tvc = $this->xpdo->getObject('locTemplateVarResource',array(
+                $tvc = $this->xpdo->getObject('locTemplateVarResource', array(
                     'key' => $this->get('key'),
                     'tmplvarid' => $tv->get('id'),
                     'contentid' => $this->get('resource_id'),
@@ -277,16 +278,16 @@ class localizatorContent extends xPDOSimpleObject {
                 if ($tvc == null) {
                     /** @var modTemplateVarResource $tvc add a new record */
                     $tvc = $this->xpdo->newObject('locTemplateVarResource');
-                    $tvc->set('key',$this->get('key'));
-                    $tvc->set('tmplvarid',$tv->get('id'));
-                    $tvc->set('contentid',$this->get('resource_id'));
+                    $tvc->set('key', $this->get('key'));
+                    $tvc->set('tmplvarid', $tv->get('id'));
+                    $tvc->set('contentid', $this->get('resource_id'));
                 }
-                $tvc->set('value',$value);
+                $tvc->set('value', $value);
                 $tvc->save();
 
-            /* if equal to default value, erase TVR record */
+                /* if equal to default value, erase TVR record */
             } else {
-                $tvc = $this->xpdo->getObject('locTemplateVarResource',array(
+                $tvc = $this->xpdo->getObject('locTemplateVarResource', array(
                     'key' => $this->get('key'),
                     'tmplvarid' => $tv->get('id'),
                     'contentid' => $this->get('resource_id'),
@@ -297,13 +298,13 @@ class localizatorContent extends xPDOSimpleObject {
             }
         }
 
-        if (!empty($tvids)){
-	        $this->xpdo->removeCollection('locTemplateVarResource', array(
-	            'key' => $this->get('key'),
-	            'tmplvarid:NOT IN' => $tvids,
-	            'contentid' => $this->get('resource_id'),
-	        ));
-	    }
+        if (!empty($tvids)) {
+            $this->xpdo->removeCollection('locTemplateVarResource', array(
+                'key' => $this->get('key'),
+                'tmplvarid:NOT IN' => $tvids,
+                'contentid' => $this->get('resource_id'),
+            ));
+        }
     }
 
 
@@ -318,47 +319,48 @@ class localizatorContent extends xPDOSimpleObject {
      * current resource.
      * @return mixed The processed output of the template variable.
      */
-    public static function renderTVOutput(xPDO & $xpdo, $tv, $value = '', $resourceId= 0) {
-        if (!($tv instanceof modTemplateVar)){
+    public static function renderTVOutput(xPDO &$xpdo, $tv, $value = '', $resourceId = 0)
+    {
+        if (!($tv instanceof modTemplateVar)) {
             $byName = !is_numeric($tv);
 
             $tv = $xpdo->getObject('modTemplateVar', $byName ? array('name' => $tv) : $tv);
 
-            if ($tv == null){
+            if ($tv == null) {
                 return $value;
             }
         }
 
         /* process any TV commands in value */
-        $value= $tv->processBindings($value, $resourceId);
+        $value = $tv->processBindings($value, $resourceId);
 
-        $params= array ();
+        $params = array();
         /**
          * Backwards support for display_params
          * @deprecated To be removed in 2.2
          */
-        if ($paramstring= $tv->get('display_params')) {
+        if ($paramstring = $tv->get('display_params')) {
             $tv->xpdo->deprecated('2.2.0', 'Use output_properties instead.', 'modTemplateVar renderOutput display_params');
-            $cp= explode("&", $paramstring);
+            $cp = explode("&", $paramstring);
             foreach ($cp as $p => $v) {
-                $ar= explode("=", $v);
+                $ar = explode("=", $v);
                 if (is_array($ar) && count($ar) == 2) {
-                    $params[$ar[0]]= $tv->decodeParamValue($ar[1]);
+                    $params[$ar[0]] = $tv->decodeParamValue($ar[1]);
                 }
             }
         }
         /* get output_properties for rendering properties */
         $outputProperties = $tv->get('output_properties');
         if (!empty($outputProperties) && is_array($outputProperties)) {
-            $params = array_merge($params,$outputProperties);
+            $params = array_merge($params, $outputProperties);
         }
 
         /* run prepareOutput to allow for custom overriding */
         $value = $tv->prepareOutput($value, $resourceId);
 
         /* find the render */
-        $outputRenderPaths = $tv->getRenderDirectories('OnTVOutputRenderList','output');
-        return $tv->getRender($params,$value,$outputRenderPaths,'output',$resourceId,$tv->get('display'));
+        $outputRenderPaths = $tv->getRenderDirectories('OnTVOutputRenderList', 'output');
+        return $tv->getRender($params, $value, $outputRenderPaths, 'output', $resourceId, $tv->get('display'));
     }
 
     /**
