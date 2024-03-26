@@ -7,7 +7,7 @@ Changelog for localizator.
 - Added simple copying of strings, without translation
 - PSR-12 compatible document formatting 
 - Added google translator
-- Added deepal translator (text mode)
+- Added deepl translator (text mode)
 
 1.0.8-beta
 ==============
