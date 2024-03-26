@@ -9,40 +9,43 @@ class localizatorContentUpdateProcessor extends modObjectUpdateProcessor
     public $afterSaveEvent = 'OnSaveLocalization';
     public $permission = '';
 
-    function __construct(modX & $modx,array $properties = array()) {
+    function __construct(modX &$modx, array $properties = array())
+    {
         parent::__construct($modx, $properties);
         $data = $this->getProperties();
-        foreach ($data as $key => $value){
-            if (strpos($key, 'tvlocalizator_') !== false){
+        foreach ($data as $key => $value) {
+            if (strpos($key, 'tvlocalizator_') !== false) {
                 $this->setProperty(substr($key, 14), $value);
                 $this->unsetProperty($key);
             }
-            if (strpos($key, 'tvbrowserlocalizator_') !== false){
+            if (strpos($key, 'tvbrowserlocalizator_') !== false) {
                 $this->unsetProperty($key);
             }
         }
         $this->unsetProperty('action');
     }
 
-    public function checkPermissions() {
+    public function checkPermissions()
+    {
         if (!$this->modx->getOption('localizator_check_permissions', null, false, true)) return true;
         $key = trim($this->getProperty('key'));
         $this->permission = "localizatorcontent_save_{$key}";
         return parent::checkPermissions();
     }
-    
-    public function initialize() {
 
-        $primaryKey = $this->getProperty($this->primaryKeyField,false);
-        if (empty($primaryKey)){
+    public function initialize()
+    {
+
+        $primaryKey = $this->getProperty($this->primaryKeyField, false);
+        if (empty($primaryKey)) {
             $this->object = $this->modx->getObject($this->classKey, array(
-                'resource_id' => $this->getProperty('resource_id',false),
-                'key' => $this->getProperty('key',false),
+                'resource_id' => $this->getProperty('resource_id', false),
+                'key' => $this->getProperty('key', false),
             ));
-            $this->setProperty($this->primaryKeyField,$this->object->get($this->primaryKeyField));
+            $this->setProperty($this->primaryKeyField, $this->object->get($this->primaryKeyField));
             //$this->setProperty('key',$this->object->get('key'));
         }
-        
+
         return parent::initialize();
     }
 
@@ -53,12 +56,12 @@ class localizatorContentUpdateProcessor extends modObjectUpdateProcessor
     public function beforeSet()
     {
 
-		$id = (int)$this->getProperty('id');
-		 if (empty($id)) {
+        $id = (int)$this->getProperty('id');
+        if (empty($id)) {
             return $this->modx->lexicon('localizator_error_no_id');
         }
 
-		$key = trim($this->getProperty('key'));
+        $key = trim($this->getProperty('key'));
         $resource_id = $this->getProperty('resource_id');
         if (empty($key)) {
             return $this->modx->lexicon('localizator_language_err_no_key');

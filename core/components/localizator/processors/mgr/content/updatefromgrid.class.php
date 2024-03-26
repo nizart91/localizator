@@ -10,7 +10,7 @@ class localizatorContentUpdateFromGridProcessor extends localizatorContentUpdate
      */
     public function initialize()
     {
-        $data = $this->getProperty('data'); 
+        $data = $this->getProperty('data');
         if (empty($data)) {
             return $this->modx->lexicon('invalid_data');
         }
@@ -18,8 +18,8 @@ class localizatorContentUpdateFromGridProcessor extends localizatorContentUpdate
         $data = json_decode($data, true);
         if (empty($data)) {
             return $this->modx->lexicon('invalid_data');
-        }   
- 
+        }
+
         $this->setProperties($data);
         $this->unsetProperty('data');
 
@@ -32,23 +32,22 @@ class localizatorContentUpdateFromGridProcessor extends localizatorContentUpdate
      */
     public function beforeSet()
     {
-        $properties = $this->getProperties(); 
-       
+        $properties = $this->getProperties();
+
         foreach ($properties as $key => $value) {
             if ($key == '_key') {
-            	$key_value = explode(" ", $value);
+                $key_value = explode(" ", $value);
                 $this->setProperty('key', $key_value[0]);
             }
-        } 
+        }
 
         if ($resource = $this->modx->getObject($this->classKey, $properties['id'])) {
-        	$resource_id = $resource->get('resource_id');
-        	$this->setProperty('resource_id', $resource_id);
+            $resource_id = $resource->get('resource_id');
+            $this->setProperty('resource_id', $resource_id);
         }
- 
+
         return parent::beforeSet();
     }
- 
 }
 
 return 'localizatorContentUpdateFromGridProcessor';

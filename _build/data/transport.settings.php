@@ -1,4 +1,5 @@
 <?php
+
 /** @var modX $modx */
 /** @var array $sources */
 
@@ -15,29 +16,37 @@ $tmp = array(
         'area' => 'localizator_main',
     ),
 
-	// translator
-	'default_translator' => array(
+    // translator
+    'default_translator' => array(
         'xtype' => 'textfield',
-		'value' => 'Yandex',
+        'value' => 'Yandex',
         'area' => 'localizator_translator',
     ),
-	'key_yandex' => array(
+    'key_yandex' => array(
         'xtype' => 'textfield',
         'area' => 'localizator_translator',
     ),
-	'translate_translated' => array(
+    'key_google' => array(
+        'xtype' => 'textfield',
+        'area' => 'localizator_translator',
+    ),
+    'key_deepl' => array(
+        'xtype' => 'textfield',
+        'area' => 'localizator_translator',
+    ),
+    'translate_translated' => array(
         'xtype' => 'combo-boolean',
-		'value' => false,
+        'value' => false,
         'area' => 'localizator_translator',
     ),
-	'translate_translated_fields' => array(
+    'translate_translated_fields' => array(
         'xtype' => 'combo-boolean',
-		'value' => false,
+        'value' => false,
         'area' => 'localizator_translator',
     ),
-	'translate_fields' => array(
+    'translate_fields' => array(
         'xtype' => 'textfield',
-		'value' => 'pagetitle,longtitle,menutitle,seotitle,keywords,introtext,description,content',
+        'value' => 'pagetitle,longtitle,menutitle,seotitle,keywords,introtext,description,content',
         'area' => 'localizator_translator',
     ),
 );
@@ -49,7 +58,8 @@ foreach ($tmp as $k => $v) {
         array(
             'key' => 'localizator_' . $k,
             'namespace' => PKG_NAME_LOWER,
-        ), $v
+        ),
+        $v
     ), '', true, true);
 
     $settings[] = $setting;

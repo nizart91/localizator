@@ -41,7 +41,7 @@ class localizatorContentGetListProcessor extends modObjectGetListProcessor
             'localizatorLanguage.active' => 1,
         );
 
-        if ($this->loc_permission){
+        if ($this->loc_permission) {
             $q = $this->modx->newQuery('localizatorLanguage')
                 ->where(array(
                     'active' => 1,
@@ -49,19 +49,19 @@ class localizatorContentGetListProcessor extends modObjectGetListProcessor
                 ->select('key');
 
             if ($q->prepare() && $q->stmt->execute()) {
-                while($key = $q->stmt->fetchColumn()){
-                    if (!$this->modx->hasPermission("localizatorcontent_view_{$key}")){
+                while ($key = $q->stmt->fetchColumn()) {
+                    if (!$this->modx->hasPermission("localizatorcontent_view_{$key}")) {
                         $where['localizatorContent.key:NOT IN'][] = $key;
                     }
                 }
             }
         }
 
-		$c->leftJoin('localizatorLanguage','localizatorLanguage', 'localizatorLanguage.key = localizatorContent.key');
-		$c->select('localizatorContent.*, CONCAT(localizatorLanguage.name, char(32), char(91), CONCAT(localizatorLanguage.key, char(93), " (", localizatorLanguage.http_host, ")"))  as `_key` ');
-		$c->where($where);
+        $c->leftJoin('localizatorLanguage', 'localizatorLanguage', 'localizatorLanguage.key = localizatorContent.key');
+        $c->select('localizatorContent.*, CONCAT(localizatorLanguage.name, char(32), char(91), CONCAT(localizatorLanguage.key, char(93), " (", localizatorLanguage.http_host, ")"))  as `_key` ');
+        $c->where($where);
 
-		$query = trim($this->getProperty('query'));
+        $query = trim($this->getProperty('query'));
         if ($query) {
             $c->where(array(
                 'pagetitle:LIKE' => "%{$query}%",
@@ -74,7 +74,7 @@ class localizatorContentGetListProcessor extends modObjectGetListProcessor
             ));
         }
 
-		return $c;
+        return $c;
     }
 
 
@@ -134,7 +134,6 @@ class localizatorContentGetListProcessor extends modObjectGetListProcessor
 
         return $array;
     }
-
 }
 
 return 'localizatorContentGetListProcessor';

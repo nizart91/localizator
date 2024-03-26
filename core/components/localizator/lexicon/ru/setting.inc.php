@@ -9,8 +9,14 @@ $_lang['setting_localizator_default_language_desc'] = 'Ключ локализа
 $_lang['setting_localizator_key_yandex'] = 'API ключ для Яндекс';
 $_lang['setting_localizator_key_yandex_desc'] = 'API ключ для Яндекс переводчика, <a href="https://tech.yandex.ru/keys/get/?service=trnsl" target="_blank">API ключ</a>';
 
+$_lang['setting_localizator_key_google'] = 'API ключ для Google';
+$_lang['setting_localizator_key_google_desc'] = 'API ключ для Google переводчика, <a href="https://cloud.google.com/translate/" target="_blank">Google cloud</a>';
+
+$_lang['setting_localizator_key_deepl'] = 'API ключ для сервиса Deepl';
+$_lang['setting_localizator_key_deepl_desc'] = 'API ключ для Deepl переводчика, <a href="https://www.deepl.com/ru/pro/select-country/" target="_blank">Получить ключ</a>';
+
 $_lang['setting_localizator_default_translator'] = 'Переводчик для автоматического перевода';
-$_lang['setting_localizator_default_translator_desc'] = 'Пока что доступен только Yandex';
+$_lang['setting_localizator_default_translator_desc'] = 'Возможные значения: Yandex, Google, DeepL, либо оставить пустым для копирования значений';
 
 $_lang['setting_localizator_translate_translated'] = 'Дополнять переведенные локализации?';
 $_lang['setting_localizator_translate_translated_desc'] = 'При использовании автоматического перевода переведет ПУСТЫЕ поля у существующих локализаций';

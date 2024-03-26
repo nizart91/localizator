@@ -41,10 +41,10 @@ class localizatorLanguageGetListProcessor extends modObjectGetListProcessor
             ));
         }
 
-		$combo = $this->getProperty('combo');
-		if($combo) {
-			$c->select('localizatorLanguage.*, CONCAT(localizatorLanguage.name, char(32), char(91), CONCAT(localizatorLanguage.key, char(93), " (", localizatorLanguage.http_host, ")"))  as `_title` ');
-		}
+        $combo = $this->getProperty('combo');
+        if ($combo) {
+            $c->select('localizatorLanguage.*, CONCAT(localizatorLanguage.name, char(32), char(91), CONCAT(localizatorLanguage.key, char(93), " (", localizatorLanguage.http_host, ")"))  as `_title` ');
+        }
 
         return $c;
     }
@@ -106,7 +106,6 @@ class localizatorLanguageGetListProcessor extends modObjectGetListProcessor
 
         return $array;
     }
-
 }
 
 return 'localizatorLanguageGetListProcessor';

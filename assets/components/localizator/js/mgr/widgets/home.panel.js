@@ -2,7 +2,8 @@ localizator.panel.Home = function (config) {
     config = config || {};
     Ext.apply(config, {
         baseCls: 'modx-formpanel',
-        layout: 'anchor',
+        layout: 'anchor', 
+        cls: 'container',
         /*
          stateful: true,
          stateId: 'localizator-panel-home',

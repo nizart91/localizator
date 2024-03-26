@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Loads the Tabs panel for Localizator.
  *
@@ -8,11 +9,13 @@
  * @subpackage processors
  */
 
-class localizatorFormProcessor extends modProcessor {
+class localizatorFormProcessor extends modProcessor
+{
 
-    public function process() {
+    public function process()
+    {
 
-        require_once MODX_CORE_PATH.'model/modx/modmanagercontroller.class.php';
+        require_once MODX_CORE_PATH . 'model/modx/modmanagercontroller.class.php';
         require_once MODX_CORE_PATH . 'components/localizator/model/localizator/localizatorformcontroller.class.php';
         $controller = new LocalizatorFormController($this->modx);
         $this->modx->controller = &$controller;
@@ -24,14 +27,15 @@ class localizatorFormProcessor extends modProcessor {
         $localizator->working_context = 'web';
 
         $which_editor = $this->modx->getOption('which_editor', null, false, true);
-        
 
-        $class_key = 'modDocument'; $richtext = false;
+
+        $class_key = 'modDocument';
+        $richtext = false;
         if ($this->modx->resource = $this->modx->getObject('modResource', $scriptProperties['resource_id'])) {
             $localizator->working_context = $this->modx->resource->get('context_key');
             $class_key = $this->modx->resource->get('class_key');
 
-            if ($which_editor != false){
+            if ($which_editor != false) {
                 $richtext = $this->modx->resource->get('richtext');
             }
         }
@@ -44,10 +48,9 @@ class localizatorFormProcessor extends modProcessor {
         $this->modx->lexicon->load('core:formcustomization');
 
         /*actual record */
-        if ($loc = $this->modx->getObject('localizatorContent', $scriptProperties['loc_id'])){
+        if ($loc = $this->modx->getObject('localizatorContent', $scriptProperties['loc_id'])) {
             $scriptProperties['isnew'] = 0;
-        }
-        else{
+        } else {
             $loc = $this->modx->newObject('localizatorContent');
             $loc->set('resource_id', $scriptProperties['resource_id']);
             $scriptProperties['isnew'] = 1;
@@ -81,13 +84,13 @@ class localizatorFormProcessor extends modProcessor {
                 'caption' => $this->modx->lexicon('localizator_keywords'),
             ),
         );
-        if (!in_array($class_key, array('modStaticResource', 'modSymLink', 'modWebLink'))){
+        if (!in_array($class_key, array('modStaticResource', 'modSymLink', 'modWebLink'))) {
             $resourcefields['content'] = array(
                 'inputTVtype' => $richtext ? 'richtext' : 'textarea',
             );
         }
 
-        foreach ($resourcefields as $key => &$values){
+        foreach ($resourcefields as $key => &$values) {
             $values = array_merge(array(
                 'field' => $key,
                 'caption' => $this->modx->lexicon("resource_{$key}"),
@@ -100,8 +103,8 @@ class localizatorFormProcessor extends modProcessor {
         /* get categories */
         $c = $this->modx->newQuery('modCategory');
         $c->sortby('rank', 'ASC');
-        $c->sortby('category','ASC');
-        $cats = $this->modx->getCollection('modCategory',$c);
+        $c->sortby('category', 'ASC');
+        $cats = $this->modx->getCollection('modCategory', $c);
         /** @var modCategory $cat */
         foreach ($cats as $cat) {
             $tvtabs[$cat->get('id')] = array(
@@ -116,8 +119,8 @@ class localizatorFormProcessor extends modProcessor {
         );
 
         //$tvkeys = $loc->getTVKeys();
-        
-        foreach ($loc->getTemplateVars() as $tv){
+
+        foreach ($loc->getTemplateVars() as $tv) {
             if (!$tv->checkResourceGroupAccess()) {
                 continue;
             }
@@ -130,7 +133,7 @@ class localizatorFormProcessor extends modProcessor {
             );
         }
 
-        $tvtabs = array_filter($tvtabs, function($var){
+        $tvtabs = array_filter($tvtabs, function ($var) {
             return (count($var['fields']) > 0);
         });
 
@@ -146,7 +149,7 @@ class localizatorFormProcessor extends modProcessor {
             ),
         );
 
-        if (!empty($tvtabs)){
+        if (!empty($tvtabs)) {
             $formtabs['tvs'] = array(
                 'caption' => $this->modx->lexicon('tvs'),
                 'tabs' => $tvtabs,
@@ -165,30 +168,28 @@ class localizatorFormProcessor extends modProcessor {
         $categories = array();
         $result = $localizator->createForm($formtabs, $record, $allfields, $categories, $scriptProperties);
 
-        if (isset($result['error'])){
+        if (isset($result['error'])) {
             $controller->setPlaceholder('error', $result['error']);
         }
-        
+
         //$controller->setPlaceholder('formcaption', '');
         $controller->setPlaceholder('fields', $this->modx->toJSON($allfields));
         $controller->setPlaceholder('categories', $categories);
         $controller->setPlaceholder('resource_id', $loc->get('resource_id'));
         $controller->setPlaceholder('formAction', $scriptProperties['isnew'] ? 'create' : 'update');
         $controller->setPlaceholder('properties', $scriptProperties);
-        
+
         $controller->setPlaceholder('win_id', $scriptProperties['win_id']);
         $controller->setPlaceholder('tvcount', count($resourcefields));
 
         if (!empty($_REQUEST['showCheckbox'])) {
             $controller->setPlaceholder('showCheckbox', 1);
-        }
-        else{
+        } else {
             $controller->setPlaceholder('showCheckbox', 0);
         }
 
 
         return $controller->process($scriptProperties);
-
     }
 }
 return 'localizatorFormProcessor';

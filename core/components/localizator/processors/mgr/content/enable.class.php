@@ -15,7 +15,6 @@ class localizatorContentEnableProcessor extends localizatorContentUpdateProcesso
 
         return true;
     }
-
 }
 
 return 'localizatorContentEnableProcessor';

@@ -59,16 +59,15 @@ class localizatorLanguageUpdateProcessor extends modObjectUpdateProcessor
     public function afterSave()
     {
         if ($this->old_key != $this->object->get('key')) {
-            
-            foreach (array('localizatorContent','locTemplateVarResource') as $class){
-                if ($upd = $this->modx->prepare("UPDATE ".$this->modx->getTableName($class)." SET `key` = ? WHERE `key` = ?")){
+
+            foreach (array('localizatorContent', 'locTemplateVarResource') as $class) {
+                if ($upd = $this->modx->prepare("UPDATE " . $this->modx->getTableName($class) . " SET `key` = ? WHERE `key` = ?")) {
                     $upd2->execute(array(
-                        $this->object->get('key'), 
+                        $this->object->get('key'),
                         $this->old_key
                     ));
                 }
             }
-
         }
 
         return true;
